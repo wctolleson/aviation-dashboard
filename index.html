@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mid-Atlantic Aviation Pursuit Dashboard | TYLin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0c1220;
+            --bg-secondary: #111827;
+            --bg-card: rgba(255,255,255,0.03);
+            --bg-card-hover: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --gradient-green: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Background Effects */
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-blue);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .header-stat {
+            text-align: right;
+        }
+
+        .header-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .stat-active { color: var(--accent-green); }
+        .stat-upcoming { color: var(--accent-amber); }
+        .stat-awarded { color: var(--accent-purple); }
+
+        /* Navigation Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .breadcrumb-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-blue);
+        }
+
+        .breadcrumb-item.active {
+            background: var(--gradient-blue);
+            border-color: transparent;
+        }
+
+        .breadcrumb-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* Region Overview */
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .state-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .state-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-blue);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .state-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .state-card:hover::before {
+            opacity: 1;
+        }
+
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .state-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .state-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+            border-radius: 6px;
+        }
+
+        .state-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .state-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+
+        .state-stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-active { background: var(--accent-green); }
+        .dot-upcoming { background: var(--accent-amber); }
+        .dot-airports { background: var(--accent-cyan); }
+
+        .state-airports {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .airport-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        /* Airport Detail View */
+        .airport-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .airport-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .airport-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .airport-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .airport-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .airport-name {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .airport-link {
+            padding: 8px 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .airport-link:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .airport-notes {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        /* Pursuits Section */
+        .pursuits-section {
+            margin-top: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--gradient-blue);
+            border-radius: 2px;
+        }
+
+        .pursuit-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pursuit-tab {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .pursuit-tab:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .pursuit-tab.active-tab {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+
+        .pursuit-tab.upcoming-tab.active {
+            background: var(--accent-amber);
+            border-color: var(--accent-amber);
+        }
+
+        .pursuit-tab.awarded-tab.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+
+        .pursuits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pursuit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            gap: 24px;
+            transition: all 0.2s;
+        }
+
+        .pursuit-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .pursuit-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-active { background: var(--accent-green); box-shadow: 0 0 12px var(--accent-green); }
+        .status-upcoming { background: var(--accent-amber); box-shadow: 0 0 12px var(--accent-amber); }
+        .status-awarded { background: var(--accent-purple); box-shadow: 0 0 12px var(--accent-purple); }
+
+        .pursuit-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .pursuit-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .pursuit-airport {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            border-radius: 6px;
+        }
+
+        .pursuit-deadline {
+            text-align: right;
+        }
+
+        .pursuit-deadline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pursuit-deadline-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Conferences Section */
+        .conferences-section {
+            margin-top: 48px;
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+        }
+
+        .conference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .conference-card {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .conference-date {
+            text-align: center;
+            padding: 12px;
+            background: var(--gradient-purple);
+            border-radius: 10px;
+            min-width: 60px;
+        }
+
+        .conference-date-month {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .conference-date-day {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .conference-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .conference-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-stats { display: none; }
+            .pursuit-card { grid-template-columns: auto 1fr; }
+            .pursuit-airport, .pursuit-deadline { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <div class="logo">✈️</div>
+                <div class="brand-text">
+                    <h1>Mid-Atlantic Aviation Pursuits</h1>
+                    <p>TYLin Strategic Opportunity Tracker</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value stat-active">3</div>
+                    <div class="header-stat-label">Active</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value stat-upcoming">5</div>
+                    <div class="header-stat-label">Upcoming</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value stat-awarded">2</div>
+                    <div class="header-stat-label">Awarded</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb">
+            <div class="breadcrumb-item active">
+                🌍 Mid-Atlantic Region
+            </div>
+            <span class="breadcrumb-arrow">→</span>
+            <div class="breadcrumb-item">
+                📍 States (8)
+            </div>
+            <span class="breadcrumb-arrow">→</span>
+            <div class="breadcrumb-item">
+                🛫 Airports (31)
+            </div>
+            <span class="breadcrumb-arrow">→</span>
+            <div class="breadcrumb-item">
+                🎯 Pursuits
+            </div>
+        </div>
+
+        <!-- State Cards -->
+        <div class="region-grid">
+            <div class="state-card" onclick="alert('Drilling into Kentucky...')">
+                <div class="state-header">
+                    <span class="state-name">Kentucky</span>
+                    <span class="state-code">KY</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        5 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-active"></span>
+                        1 Active
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">CVG</span>
+                    <span class="airport-chip">SDF</span>
+                    <span class="airport-chip">LEX</span>
+                    <span class="airport-chip">PAH</span>
+                    <span class="airport-chip">OWB</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">Maryland</span>
+                    <span class="state-code">MD</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        2 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-active"></span>
+                        1 Active
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">BWI</span>
+                    <span class="airport-chip">MTN</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">North Carolina</span>
+                    <span class="state-code">NC</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        5 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-active"></span>
+                        2 Active
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-upcoming"></span>
+                        1 Upcoming
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">CLT</span>
+                    <span class="airport-chip">RDU</span>
+                    <span class="airport-chip">GSO</span>
+                    <span class="airport-chip">ILM</span>
+                    <span class="airport-chip">AVL</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">South Carolina</span>
+                    <span class="state-code">SC</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        5 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-upcoming"></span>
+                        2 Upcoming
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">CHS</span>
+                    <span class="airport-chip">MYR</span>
+                    <span class="airport-chip">GSP</span>
+                    <span class="airport-chip">CAE</span>
+                    <span class="airport-chip">FLO</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">Tennessee</span>
+                    <span class="state-code">TN</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        5 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-active"></span>
+                        1 Active
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">BNA</span>
+                    <span class="airport-chip">MEM</span>
+                    <span class="airport-chip">TYS</span>
+                    <span class="airport-chip">CHA</span>
+                    <span class="airport-chip">TRI</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">Virginia + DC</span>
+                    <span class="state-code">VA/DC</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        6 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-upcoming"></span>
+                        2 Upcoming
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">IAD</span>
+                    <span class="airport-chip">DCA</span>
+                    <span class="airport-chip">RIC</span>
+                    <span class="airport-chip">ORF</span>
+                    <span class="airport-chip">CHO</span>
+                    <span class="airport-chip">ROA</span>
+                </div>
+            </div>
+
+            <div class="state-card">
+                <div class="state-header">
+                    <span class="state-name">West Virginia</span>
+                    <span class="state-code">WV</span>
+                </div>
+                <div class="state-stats">
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-airports"></span>
+                        3 Airports
+                    </div>
+                    <div class="state-stat">
+                        <span class="state-stat-dot dot-upcoming"></span>
+                        1 Upcoming
+                    </div>
+                </div>
+                <div class="state-airports">
+                    <span class="airport-chip">CRW</span>
+                    <span class="airport-chip">CKB</span>
+                    <span class="airport-chip">HTS</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Pursuits -->
+        <div class="pursuits-section">
+            <div class="section-header">
+                <h2 class="section-title">Current Pursuits</h2>
+                <div class="pursuit-tabs">
+                    <div class="pursuit-tab active-tab active">Active (3)</div>
+                    <div class="pursuit-tab upcoming-tab">Upcoming (5)</div>
+                    <div class="pursuit-tab awarded-tab">Awarded (2)</div>
+                </div>
+            </div>
+
+            <div class="pursuits-list">
+                <div class="pursuit-card">
+                    <div class="pursuit-status status-active"></div>
+                    <div class="pursuit-info">
+                        <h4>MAA-AE-26-005 Construction Management & Inspection</h4>
+                        <p>BWI Marshall Airport Terminal Expansion Program</p>
+                    </div>
+                    <div class="pursuit-airport">BWI</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Apr 28, 2026</div>
+                        <div class="pursuit-deadline-label">Proposal Due</div>
+                    </div>
+                </div>
+
+                <div class="pursuit-card">
+                    <div class="pursuit-status status-active"></div>
+                    <div class="pursuit-info">
+                        <h4>T1 Lobby Expansion & BHS/PBB Engineering</h4>
+                        <p>RDU Terminal 1 Modernization Project</p>
+                    </div>
+                    <div class="pursuit-airport">RDU</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Apr 17, 2026</div>
+                        <div class="pursuit-deadline-label">Proposal Due</div>
+                    </div>
+                </div>
+
+                <div class="pursuit-card">
+                    <div class="pursuit-status status-active"></div>
+                    <div class="pursuit-info">
+                        <h4>MSCAA Project No. 25-1487-00</h4>
+                        <p>Memphis International Airport Capital Program</p>
+                    </div>
+                    <div class="pursuit-airport">MEM</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Apr 14, 2026</div>
+                        <div class="pursuit-deadline-label">SOQ Due</div>
+                    </div>
+                </div>
+
+                <div class="pursuit-card">
+                    <div class="pursuit-status status-upcoming"></div>
+                    <div class="pursuit-info">
+                        <h4>Runway 4/22 Rehabilitation</h4>
+                        <p>Greenville-Spartanburg International Airport</p>
+                    </div>
+                    <div class="pursuit-airport">GSP</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Jul 2026</div>
+                        <div class="pursuit-deadline-label">Anticipated</div>
+                    </div>
+                </div>
+
+                <div class="pursuit-card">
+                    <div class="pursuit-status status-upcoming"></div>
+                    <div class="pursuit-info">
+                        <h4>Terminal Modernization - $25M CDS</h4>
+                        <p>Yeager Airport (Charleston, WV)</p>
+                    </div>
+                    <div class="pursuit-airport">CRW</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Q2 2026</div>
+                        <div class="pursuit-deadline-label">Anticipated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conferences -->
+        <div class="conferences-section">
+            <h2 class="section-title">Upcoming Conferences</h2>
+            <div class="conference-grid">
+                <div class="conference-card">
+                    <div class="conference-date">
+                        <div class="conference-date-month">Mar</div>
+                        <div class="conference-date-day">29</div>
+                    </div>
+                    <div class="conference-info">
+                        <h4>SEC-AAAE Annual Conference</h4>
+                        <p>📍 Savannah, GA</p>
+                    </div>
+                </div>
+                <div class="conference-card">
+                    <div class="conference-date">
+                        <div class="conference-date-month">Apr</div>
+                        <div class="conference-date-day">8</div>
+                    </div>
+                    <div class="conference-info">
+                        <h4>Virginia Aviation Spring Workshop</h4>
+                        <p>📍 Staunton, VA</p>
+                    </div>
+                </div>
+                <div class="conference-card">
+                    <div class="conference-date">
+                        <div class="conference-date-month">Jun</div>
+                        <div class="conference-date-day">10</div>
+                    </div>
+                    <div class="conference-info">
+                        <h4>Maryland Airport Association</h4>
+                        <p>📍 Ocean City, MD</p>
+                    </div>
+                </div>
+                <div class="conference-card">
+                    <div class="conference-date">
+                        <div class="conference-date-month">Sep</div>
+                        <div class="conference-date-day">14</div>
+                    </div>
+                    <div class="conference-info">
+                        <h4>ACI-NA Annual Conference</h4>
+                        <p>📍 Philadelphia, PA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-brand">✈️ TYLin Aviation Practice | Powered by Prometheus 🔥</div>
+            <p>Last updated: April 19, 2026 • 11:32 AM EDT</p>
+        </footer>
+    </div>
+</body>
+</html>
