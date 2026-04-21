@@ -426,6 +426,14 @@
         .status-upcoming { background: var(--accent-amber); box-shadow: 0 0 12px var(--accent-amber); }
         .status-awarded { background: var(--accent-purple); box-shadow: 0 0 12px var(--accent-purple); }
 
+        .pursuit-card.hidden {
+            display: none;
+        }
+
+        .pursuit-tab {
+            user-select: none;
+        }
+
         .pursuit-info h4 {
             font-size: 1rem;
             font-weight: 600;
@@ -922,7 +930,7 @@
                     <div class="header-stat-label">Active</div>
                 </div>
                 <div class="header-stat">
-                    <div class="header-stat-value stat-upcoming">5</div>
+                    <div class="header-stat-value stat-upcoming">3</div>
                     <div class="header-stat-label">Upcoming</div>
                 </div>
                 <div class="header-stat">
@@ -1127,16 +1135,28 @@
             <div class="section-header">
                 <h2 class="section-title">Current Pursuits</h2>
                 <div class="pursuit-tabs">
-                    <div class="pursuit-tab active-tab active">Active (2)</div>
-                    <div class="pursuit-tab upcoming-tab">Upcoming (5)</div>
-                    <div class="pursuit-tab awarded-tab">Awarded (2)</div>
+                    <div class="pursuit-tab active-tab active" data-filter="active">Active (2)</div>
+                    <div class="pursuit-tab upcoming-tab" data-filter="upcoming">Upcoming (3)</div>
+                    <div class="pursuit-tab awarded-tab" data-filter="awarded">Awarded (2)</div>
                 </div>
             </div>
 
             <div class="pursuits-list">
-                <!-- MWAA pursuits will be added with correct info -->
+                <!-- Active Pursuits -->
+                <div class="pursuit-card" data-status="active">
+                    <div class="pursuit-status status-active"></div>
+                    <div class="pursuit-info">
+                        <h4>RFP-25-29794: PMO Support Services</h4>
+                        <p>MWAA Program Management for IAD/DCA Capital Programs</p>
+                    </div>
+                    <div class="pursuit-airport">IAD/DCA</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">Apr 30, 2026</div>
+                        <div class="pursuit-deadline-label">Proposal Due</div>
+                    </div>
+                </div>
 
-                <div class="pursuit-card">
+                <div class="pursuit-card" data-status="active">
                     <div class="pursuit-status status-active"></div>
                     <div class="pursuit-info">
                         <h4>T1 Lobby Expansion & BHS/PBB Engineering</h4>
@@ -1149,20 +1169,21 @@
                     </div>
                 </div>
 
-                <div class="pursuit-card">
-                    <div class="pursuit-status status-active"></div>
+                <!-- Upcoming Pursuits -->
+                <div class="pursuit-card" data-status="upcoming">
+                    <div class="pursuit-status status-upcoming"></div>
                     <div class="pursuit-info">
                         <h4>MSCAA Project No. 25-1487-00</h4>
                         <p>Memphis International Airport Capital Program</p>
                     </div>
                     <div class="pursuit-airport">MEM</div>
                     <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Apr 14, 2026</div>
-                        <div class="pursuit-deadline-label">SOQ Due</div>
+                        <div class="pursuit-deadline-date">May 2026</div>
+                        <div class="pursuit-deadline-label">Anticipated</div>
                     </div>
                 </div>
 
-                <div class="pursuit-card">
+                <div class="pursuit-card" data-status="upcoming">
                     <div class="pursuit-status status-upcoming"></div>
                     <div class="pursuit-info">
                         <h4>Runway 4/22 Rehabilitation</h4>
@@ -1175,7 +1196,7 @@
                     </div>
                 </div>
 
-                <div class="pursuit-card">
+                <div class="pursuit-card" data-status="upcoming">
                     <div class="pursuit-status status-upcoming"></div>
                     <div class="pursuit-info">
                         <h4>Terminal Modernization - $25M CDS</h4>
@@ -1185,6 +1206,33 @@
                     <div class="pursuit-deadline">
                         <div class="pursuit-deadline-date">Q2 2026</div>
                         <div class="pursuit-deadline-label">Anticipated</div>
+                    </div>
+                </div>
+
+                <!-- Awarded Pursuits -->
+                <div class="pursuit-card" data-status="awarded">
+                    <div class="pursuit-status status-awarded"></div>
+                    <div class="pursuit-info">
+                        <h4>CLT PM/CM Services</h4>
+                        <p>Charlotte Douglas International Airport Program Management</p>
+                    </div>
+                    <div class="pursuit-airport">CLT</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">2019</div>
+                        <div class="pursuit-deadline-label">Awarded</div>
+                    </div>
+                </div>
+
+                <div class="pursuit-card" data-status="awarded">
+                    <div class="pursuit-status status-awarded"></div>
+                    <div class="pursuit-info">
+                        <h4>Concourse A Expansion Engineering</h4>
+                        <p>CLT Terminal Expansion Design Services</p>
+                    </div>
+                    <div class="pursuit-airport">CLT</div>
+                    <div class="pursuit-deadline">
+                        <div class="pursuit-deadline-date">2022</div>
+                        <div class="pursuit-deadline-label">Awarded</div>
                     </div>
                 </div>
             </div>
@@ -1239,8 +1287,42 @@
 
         <footer>
             <div class="footer-brand">✈️ TYLin Aviation Practice | Powered by Prometheus 🔥</div>
-            <p>Last updated: April 21, 2026 • 7:30 PM EDT</p>
+            <p>Last updated: April 21, 2026 • 7:35 PM EDT</p>
         </footer>
     </div>
+
+    <script>
+        // Pursuit tab filtering
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.pursuit-tab');
+            const cards = document.querySelectorAll('.pursuit-card');
+            
+            // Initialize - show only active pursuits
+            filterCards('active');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    
+                    // Update active tab styling
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cards
+                    filterCards(filter);
+                });
+            });
+            
+            function filterCards(status) {
+                cards.forEach(card => {
+                    if (card.dataset.status === status) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
