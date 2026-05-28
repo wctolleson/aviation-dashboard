@@ -261,6 +261,71 @@
             color: var(--text-secondary);
         }
 
+
+        .state-expand-hint {
+            margin-top: 14px;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .state-detail {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .state-card.expanded {
+            background: var(--bg-card-hover);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .state-card.expanded::before {
+            opacity: 1;
+        }
+
+        .state-card.expanded .state-detail {
+            display: block;
+        }
+
+        .state-detail-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .state-detail ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .state-detail li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .state-detail strong {
+            color: var(--text-primary);
+        }
+
+        .state-detail a,
+        .pursuit-info a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .state-detail a:hover,
+        .pursuit-info a:hover {
+            text-decoration: underline;
+        }
+
         /* Airport Detail View */
         .airport-grid {
             display: grid;
@@ -926,12 +991,12 @@
             </div>
             <div class="header-stats">
                 <div class="header-stat">
-                    <div class="header-stat-value stat-active">9</div>
+                    <div class="header-stat-value stat-active">2</div>
                     <div class="header-stat-label">Active</div>
                 </div>
                 <div class="header-stat">
                     <div class="header-stat-value stat-upcoming">3</div>
-                    <div class="header-stat-label">Upcoming</div>
+                    <div class="header-stat-label">Watchlist</div>
                 </div>
                 <div class="header-stat">
                     <div class="header-stat-value stat-awarded">2</div>
@@ -961,171 +1026,114 @@
 
         <!-- State Cards -->
         <div class="region-grid">
-            <div class="state-card" onclick="alert('Drilling into Kentucky...')">
-                <div class="state-header">
-                    <span class="state-name">Kentucky</span>
-                    <span class="state-code">KY</span>
-                </div>
+            <div class="state-card" data-state="KY" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">Kentucky</span><span class="state-code">KY</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        5 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-upcoming"></span>
-                        1 Watch
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>5 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>1 Watch</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">CVG</span>
-                    <span class="airport-chip">SDF</span>
-                    <span class="airport-chip">LEX</span>
-                    <span class="airport-chip">PAH</span>
-                    <span class="airport-chip">OWB</span>
+                <div class="state-airports"><span class="airport-chip">CVG</span><span class="airport-chip">SDF</span><span class="airport-chip">LEX</span><span class="airport-chip">PAH</span><span class="airport-chip">OWB</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul>
+                        <li><strong>CVG</strong> — Procurement pipeline watch only. Screen future releases for A/E, civil design, CM/inspection, PM/program management, or design-build design roles; ignore contractor-only packages.</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">Maryland</span>
-                    <span class="state-code">MD</span>
-                </div>
+            <div class="state-card" data-state="MD" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">Maryland</span><span class="state-code">MD</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        2 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-upcoming"></span>
-                        1 Watch
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>2 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>1 Watch</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">BWI</span>
-                    <span class="airport-chip">MTN</span>
+                <div class="state-airports"><span class="airport-chip">BWI</span><span class="airport-chip">MTN</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul>
+                        <li><strong>BWI / MAA</strong> — CMI RFP verification: tracker notes MAA-AE-26-005 for construction management/inspection. <a href="https://marylandaviation.com/doing-business-with-maa/">Source</a></li>
+                        <li><strong>Maryland Regional Aviation Conference</strong> — Ocean City, June 10–12, 2026.</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">North Carolina</span>
-                    <span class="state-code">NC</span>
-                </div>
+            <div class="state-card" data-state="NC" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">North Carolina</span><span class="state-code">NC</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        5 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-active"></span>
-                        4 Active
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-upcoming"></span>
-                        Outreach
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>5 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-active"></span>1 Active</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>Outreach</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">CLT</span>
-                    <span class="airport-chip">RDU</span>
-                    <span class="airport-chip">GSO</span>
-                    <span class="airport-chip">ILM</span>
-                    <span class="airport-chip">AVL</span>
+                <div class="state-airports"><span class="airport-chip">CLT</span><span class="airport-chip">RDU</span><span class="airport-chip">GSO</span><span class="airport-chip">ILM</span><span class="airport-chip">AVL</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul>
+                        <li><strong>RDU</strong> — Terminal 1 Lobby Expansion & Restroom Additions RFP; relevant as a design-build/capital project with design role potential. <a href="https://www.rdu.com/do-business-with-rdu/business-opportunities/">Source</a></li>
+                        <li><strong>RDU outreach</strong> — Monitor business outreach/events for teaming and market intelligence.</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">South Carolina</span>
-                    <span class="state-code">SC</span>
-                </div>
+            <div class="state-card" data-state="SC" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">South Carolina</span><span class="state-code">SC</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        5 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-upcoming"></span>
-                        Watch
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>5 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>No current fit</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">CHS</span>
-                    <span class="airport-chip">MYR</span>
-                    <span class="airport-chip">GSP</span>
-                    <span class="airport-chip">CAE</span>
-                    <span class="airport-chip">FLO</span>
+                <div class="state-airports"><span class="airport-chip">CHS</span><span class="airport-chip">MYR</span><span class="airport-chip">GSP</span><span class="airport-chip">CAE</span><span class="airport-chip">FLO</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul><li>No current TYLin-fit solicitation identified. Contractor-only construction bids removed from the dashboard.</li></ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">Tennessee</span>
-                    <span class="state-code">TN</span>
-                </div>
+            <div class="state-card" data-state="TN" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">Tennessee</span><span class="state-code">TN</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        5 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-upcoming"></span>
-                        Watch
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>5 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>No current fit</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">BNA</span>
-                    <span class="airport-chip">MEM</span>
-                    <span class="airport-chip">TYS</span>
-                    <span class="airport-chip">CHA</span>
-                    <span class="airport-chip">TRI</span>
+                <div class="state-airports"><span class="airport-chip">BNA</span><span class="airport-chip">MEM</span><span class="airport-chip">TYS</span><span class="airport-chip">CHA</span><span class="airport-chip">TRI</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul><li>No current TYLin-fit solicitation identified. Keep monitoring for PM/CM, inspections, program management, A/E, and design-build design roles.</li></ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">Virginia + DC</span>
-                    <span class="state-code">VA/DC</span>
-                </div>
+            <div class="state-card" data-state="VA/DC" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">Virginia + DC</span><span class="state-code">VA/DC</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        6 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-active"></span>
-                        3 Active + 1 Watch
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>6 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-active"></span>1 Active + 1 Watch</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">IAD</span>
-                    <span class="airport-chip">DCA</span>
-                    <span class="airport-chip">RIC</span>
-                    <span class="airport-chip">ORF</span>
-                    <span class="airport-chip">CHO</span>
-                    <span class="airport-chip">ROA</span>
+                <div class="state-airports"><span class="airport-chip">IAD</span><span class="airport-chip">DCA</span><span class="airport-chip">RIC</span><span class="airport-chip">ORF</span><span class="airport-chip">CHO</span><span class="airport-chip">ROA</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul>
+                        <li><strong>ROA</strong> — RFQ #26-001 Terminal Improvements; keep because it is an RFQ with conceptual design material and may fit design/PM teaming. <a href="https://flyroa.com/current-bids-and-proposals">Source</a></li>
+                        <li><strong>RIC</strong> — P.O.W.E.R. Forum / business engagement watch; good BD intel tied to capital planning.</li>
+                        <li><strong>MWAA</strong> — contractor-only IFBs removed; continue watching for A/E, PMO, CM/inspection, and program management releases.</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="state-card">
-                <div class="state-header">
-                    <span class="state-name">West Virginia</span>
-                    <span class="state-code">WV</span>
-                </div>
+            <div class="state-card" data-state="WV" tabindex="0" role="button" aria-expanded="false">
+                <div class="state-header"><span class="state-name">West Virginia</span><span class="state-code">WV</span></div>
                 <div class="state-stats">
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-airports"></span>
-                        3 Airports
-                    </div>
-                    <div class="state-stat">
-                        <span class="state-stat-dot dot-active"></span>
-                        2 Active
-                    </div>
+                    <div class="state-stat"><span class="state-stat-dot dot-airports"></span>3 Airports</div>
+                    <div class="state-stat"><span class="state-stat-dot dot-upcoming"></span>No current fit</div>
                 </div>
-                <div class="state-airports">
-                    <span class="airport-chip">CRW</span>
-                    <span class="airport-chip">CKB</span>
-                    <span class="airport-chip">HTS</span>
+                <div class="state-airports"><span class="airport-chip">CRW</span><span class="airport-chip">CKB</span><span class="airport-chip">HTS</span></div>
+                <div class="state-expand-hint">Tap/click to expand</div>
+                <div class="state-detail">
+                    <div class="state-detail-title">Relevant opportunities</div>
+                    <ul><li>CRW fuel farm and electric charging station construction bids removed as contractor-only solicitations.</li></ul>
                 </div>
             </div>
         </div>
@@ -1133,9 +1141,9 @@
         <!-- Active Pursuits -->
         <div class="pursuits-section">
             <div class="section-header">
-                <h2 class="section-title">Current Pursuits</h2>
+                <h2 class="section-title">TYLin-Fit Pursuits</h2>
                 <div class="pursuit-tabs">
-                    <div class="pursuit-tab active-tab active" data-filter="active">Active (9)</div>
+                    <div class="pursuit-tab active-tab active" data-filter="active">Active (2)</div>
                     <div class="pursuit-tab upcoming-tab" data-filter="upcoming">Watchlist (3)</div>
                     <div class="pursuit-tab awarded-tab" data-filter="awarded">Awarded (2)</div>
                 </div>
@@ -1143,188 +1151,70 @@
 
             <div class="pursuits-list">
                 <!-- Active Pursuits -->
-                <div class="pursuit-card" data-status="active">
+                <div class="pursuit-card" data-status="active" data-state="VA/DC">
                     <div class="pursuit-status status-active"></div>
                     <div class="pursuit-info">
                         <h4>RFQ #26-001: Terminal Improvements</h4>
-                        <p>Roanoke-Blacksburg Regional Airport — terminal improvement RFQ. <a href="https://flyroa.com/current-bids-and-proposals">Source</a></p>
+                        <p>Roanoke-Blacksburg Regional Airport — RFQ with conceptual design material; keep for design/PM teaming review. <a href="https://flyroa.com/current-bids-and-proposals">Source</a></p>
                     </div>
                     <div class="pursuit-airport">ROA</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">May 29, 2026</div>
-                        <div class="pursuit-deadline-label">SOQ Due</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">May 29, 2026</div><div class="pursuit-deadline-label">SOQ Due</div></div>
                 </div>
 
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>North Commercial Ramp Expansion Re-Advertisement</h4>
-                        <p>Wilmington International Airport — airfield construction bid. <a href="https://flyilm.com/airport-documents/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">ILM</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 3, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>IFB-26-22432: DCA Operations Center Alterations</h4>
-                        <p>MWAA / Reagan National — operations center renovation. <a href="https://www.mwaa.com/business/current-contracting-opportunities">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">DCA</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 3, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>Runway 6-24 Rehabilitation Phase 2</h4>
-                        <p>Wilmington International Airport — runway rehabilitation construction. <a href="https://flyilm.com/airport-documents/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">ILM</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 4, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>NCDOT Apron Rehabilitation IFB</h4>
-                        <p>Raleigh-Durham International Airport — apron rehabilitation construction. <a href="https://www.rdu.com/do-business-with-rdu/business-opportunities/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">RDU</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 10, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>Electric Charging Stations</h4>
-                        <p>West Virginia International Yeager Airport — electrical infrastructure. <a href="https://flycrw.com/business-at-crw/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">CRW</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 15, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>IFB-26-21670: AOA Perimeter & Fence Line Enhancements</h4>
-                        <p>MWAA / Dulles — air operations area site/civil improvements. <a href="https://www.mwaa.com/business/current-contracting-opportunities">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">IAD</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 18, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
+                <div class="pursuit-card" data-status="active" data-state="NC">
                     <div class="pursuit-status status-active"></div>
                     <div class="pursuit-info">
                         <h4>T1 Lobby Expansion & Restroom Additions RFP</h4>
-                        <p>RDU Terminal 1 modernization — re-advertised May 27. <a href="https://www.rdu.com/do-business-with-rdu/business-opportunities/">Source</a></p>
+                        <p>RDU Terminal 1 modernization — relevant design-build/capital project with design role potential. <a href="https://www.rdu.com/do-business-with-rdu/business-opportunities/">Source</a></p>
                     </div>
                     <div class="pursuit-airport">RDU</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 22, 2026</div>
-                        <div class="pursuit-deadline-label">Proposal Due</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="active">
-                    <div class="pursuit-status status-active"></div>
-                    <div class="pursuit-info">
-                        <h4>Fuel Farm Improvements</h4>
-                        <p>West Virginia International Yeager Airport — fuel infrastructure; pre-bid June 2. <a href="https://flycrw.com/business-at-crw/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">CRW</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Jun 23, 2026</div>
-                        <div class="pursuit-deadline-label">Bid Due</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">Jun 22, 2026</div><div class="pursuit-deadline-label">Proposal Due</div></div>
                 </div>
 
                 <!-- Watchlist / Upcoming Pursuits -->
-                <div class="pursuit-card" data-status="upcoming">
-                    <div class="pursuit-status status-upcoming"></div>
-                    <div class="pursuit-info">
-                        <h4>CVG May/June Procurement Pipeline</h4>
-                        <p>SCADA upgrades, Drone/UAS detection, Taxiway M reconstruction, N. ARFF kitchen rehab — monitor OpenGov releases. <a href="https://www.cvgairport.com/business/business-opportunities/procurement/">Source</a></p>
-                    </div>
-                    <div class="pursuit-airport">CVG</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">May–Jun 2026</div>
-                        <div class="pursuit-deadline-label">Expected</div>
-                    </div>
-                </div>
-
-                <div class="pursuit-card" data-status="upcoming">
+                <div class="pursuit-card" data-status="upcoming" data-state="MD">
                     <div class="pursuit-status status-upcoming"></div>
                     <div class="pursuit-info">
                         <h4>BWI / MAA CMI RFP Verification</h4>
-                        <p>Tracker notes MAA-AE-26-005 CMI RFP; Maryland procurement source needs manual verification. <a href="https://marylandaviation.com/doing-business-with-maa/">Source</a></p>
+                        <p>Tracker notes MAA-AE-26-005 CMI RFP; relevant if it is construction management/inspection. Needs manual procurement verification. <a href="https://marylandaviation.com/doing-business-with-maa/">Source</a></p>
                     </div>
                     <div class="pursuit-airport">BWI</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Watch</div>
-                        <div class="pursuit-deadline-label">Verify</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">Watch</div><div class="pursuit-deadline-label">Verify</div></div>
                 </div>
 
-                <div class="pursuit-card" data-status="upcoming">
+                <div class="pursuit-card" data-status="upcoming" data-state="KY">
+                    <div class="pursuit-status status-upcoming"></div>
+                    <div class="pursuit-info">
+                        <h4>CVG Procurement Pipeline — Screen for TYLin Scope</h4>
+                        <p>Monitor upcoming releases and keep only A/E, civil/structural design, CM/inspection, PM/program management, or design-build design opportunities. <a href="https://www.cvgairport.com/business/business-opportunities/procurement/">Source</a></p>
+                    </div>
+                    <div class="pursuit-airport">CVG</div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">May–Jun 2026</div><div class="pursuit-deadline-label">Screen</div></div>
+                </div>
+
+                <div class="pursuit-card" data-status="upcoming" data-state="VA/DC">
                     <div class="pursuit-status status-upcoming"></div>
                     <div class="pursuit-info">
                         <h4>RIC P.O.W.E.R. Forum / Business Engagement</h4>
                         <p>Richmond business engagement tied to capital program outreach; date needs confirmation. <a href="https://flyrichmond.com/business-opportunities/">Source</a></p>
                     </div>
                     <div class="pursuit-airport">RIC</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">Fall 2026</div>
-                        <div class="pursuit-deadline-label">Watch</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">Fall 2026</div><div class="pursuit-deadline-label">Watch</div></div>
                 </div>
 
                 <!-- Awarded Pursuits -->
-                <div class="pursuit-card" data-status="awarded">
+                <div class="pursuit-card" data-status="awarded" data-state="NC">
                     <div class="pursuit-status status-awarded"></div>
-                    <div class="pursuit-info">
-                        <h4>CLT PM/CM Services</h4>
-                        <p>Charlotte Douglas International Airport Program Management</p>
-                    </div>
+                    <div class="pursuit-info"><h4>CLT PM/CM Services</h4><p>Charlotte Douglas International Airport Program Management</p></div>
                     <div class="pursuit-airport">CLT</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">2019</div>
-                        <div class="pursuit-deadline-label">Awarded</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">2019</div><div class="pursuit-deadline-label">Awarded</div></div>
                 </div>
 
-                <div class="pursuit-card" data-status="awarded">
+                <div class="pursuit-card" data-status="awarded" data-state="NC">
                     <div class="pursuit-status status-awarded"></div>
-                    <div class="pursuit-info">
-                        <h4>Concourse A Expansion Engineering</h4>
-                        <p>CLT Terminal Expansion Design Services</p>
-                    </div>
+                    <div class="pursuit-info"><h4>Concourse A Expansion Engineering</h4><p>CLT Terminal Expansion Design Services</p></div>
                     <div class="pursuit-airport">CLT</div>
-                    <div class="pursuit-deadline">
-                        <div class="pursuit-deadline-date">2022</div>
-                        <div class="pursuit-deadline-label">Awarded</div>
-                    </div>
+                    <div class="pursuit-deadline"><div class="pursuit-deadline-date">2022</div><div class="pursuit-deadline-label">Awarded</div></div>
                 </div>
             </div>
         </div>
@@ -1378,32 +1268,49 @@
 
         <footer>
             <div class="footer-brand">✈️ TYLin Aviation Practice | Powered by Prometheus 🔥</div>
-            <p>Last updated: May 28, 2026 • 1:05 PM EDT</p>
+            <p>Last updated: May 28, 2026 • 5:18 PM EDT</p>
         </footer>
     </div>
 
     <script>
-        // Pursuit tab filtering
+        // Pursuit tab filtering + mobile-friendly state expansion
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.pursuit-tab');
             const cards = document.querySelectorAll('.pursuit-card');
-            
-            // Initialize - show only active pursuits
+            const stateCards = document.querySelectorAll('.state-card');
+
             filterCards('active');
-            
+
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const filter = this.dataset.filter;
-                    
-                    // Update active tab styling
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
-                    
-                    // Filter cards
                     filterCards(filter);
                 });
             });
-            
+
+            stateCards.forEach(card => {
+                const toggle = () => {
+                    const isExpanded = card.classList.toggle('expanded');
+                    card.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                    const hint = card.querySelector('.state-expand-hint');
+                    if (hint) hint.textContent = isExpanded ? 'Tap/click to collapse' : 'Tap/click to expand';
+                };
+
+                card.addEventListener('click', function(event) {
+                    if (event.target.closest('a')) return;
+                    toggle();
+                });
+
+                card.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
             function filterCards(status) {
                 cards.forEach(card => {
                     if (card.dataset.status === status) {
